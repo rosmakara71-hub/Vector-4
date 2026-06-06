@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <title>វិញ្ញាសាប្រឡងតេស្តសមត្ថភាព៖ ធរណីមាត្រក្នុងលំហ (វគ្គ២)</title>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    
+    <style>
+        :root { --primary: #1a5276; --accent: #2e4053; --success: #27ae60; }
+        body { font-family: 'Khmer OS Battambang', sans-serif; background: #f4f7f6; padding: 20px; color: #333; line-height: 1.7; }
+        .quiz-container { max-width: 850px; margin: auto; background: #fff; padding: 35px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
+        h1 { text-align: center; color: var(--primary); margin-bottom: 30px; border-bottom: 3px solid var(--primary); padding-bottom: 15px; }
+        .student-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; background: #ebf5fb; padding: 20px; border-radius: 8px; border-left: 5px solid var(--primary); }
+        .student-info div { display: flex; flex-direction: column; }
+        .student-info label { font-weight: bold; margin-bottom: 5px; color: var(--primary); }
+        input[type="text"] { padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 1em; }
+        .question-box { margin-bottom: 30px; padding: 20px; border: 1px solid #e1e8ed; background: #fff; border-radius: 8px; }
+        .question-title { font-weight: bold; color: var(--primary); margin-bottom: 15px; font-size: 1.05em; }
+        .options { display: flex; flex-direction: column; gap: 10px; margin-left: 10px; }
+        .options label { cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 5px; border-radius: 4px; }
+        .options label:hover { background: #ebf5fb; }
+        .btn-submit { width: 100%; padding: 15px; background: var(--success); color: white; border: none; font-size: 1.2em; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-submit:hover { background: #219150; }
+        .feedback { margin-top: 15px; padding: 15px; display: none; border-radius: 6px; font-size: 0.95em; }
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        #summary { text-align: center; margin-top: 30px; font-weight: bold; font-size: 1.4em; color: var(--primary); padding: 20px; background: #e8f8f5; border-radius: 8px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>📝 វិញ្ញាសាតេស្ត៖ ធរណីមាត្រក្នុងលំហ សុទ្ធសាធ (២៥ សំណួរថ្មី)</h1>
+    
+    <div class="student-info">
+        <div>
+            <label for="sName">ឈ្មោះសិស្ស៖</label>
+            <input type="text" id="sName" placeholder="វាយបញ្ចូលឈ្មោះនៅទីនេះ...">
+        </div>
+        <div>
+            <label for="sClass">ថ្នាក់រៀន៖</label>
+            <input type="text" id="sClass" placeholder="ឧទាហរណ៍៖ ១២អា">
+        </div>
+    </div>
+
+    <form id="quizForm"></form>
+    
+    <button type="button" class="btn-submit" onclick="evaluateQuiz()">បញ្ជូនវិញ្ញាសា និងពិនិត្យលទ្ធផល</button>
+    <div id="summary"></div>
+</div>
+
+<script>
+    // សំណួរថ្មីទាំង ២៥ អំពីធរណីមាត្រក្នុងលំហ (វគ្គ២)
+    const questions = [
+        { q: "រកកូអរដោនេនៃវ៉ិចទ័រ $2\\vec{u} - \\vec{v}$ បើ $\\vec{u}=(1, -1, 2)$ និង $\\vec{v}=(3, 0, 1)$?", opt: ["$(-1, -2, 3)$", "$(5, -2, 5)$", "$(-1, -2, 5)$", "$(1, -2, 3)$"], ans: "$(-1, -2, 3)$", exp: "$2\\vec{u} - \\vec{v} = (2(1)-3, 2(-1)-0, 2(2)-1) = (2-3, -2, 4-1) = (-1, -2, 3)$" },
+        { q: "តើប្លង់កូអរដោនេ $(Oyz)$ មានសមីការដូចម្តេច?", opt: ["$x = 0$", "$y = 0$", "$z = 0$", "$y + z = 0$"], ans: "$x = 0$", exp: "នៅលើប្លង់ $(Oyz)$ គ្រប់ចំណុចទាំងអស់មានកូអរដោនេតាមអ័ក្ស $x$ ស្មើនឹង $0$ ជានិច្ច។" },
+        { q: "រកសមីការប្លង់ដែលកាត់តាមចំណុច $A(1, 2, 3)$ ហើយស្របនឹងប្លង់ $(Oxy)$?", opt: ["$z = 3$", "$x = 1$", "$y = 2$", "$x + y + z = 6$"], ans: "$z = 3$", exp: "ប្លង់ស្របនឹងប្លង់ $(Oxy)$ មានវ៉ិចទ័រណរម៉ាល់ $\\vec{n}=(0,0,1)$ ដូចនេះសមីការគឺ $0(x-1)+0(y-2)+1(z-3)=0 \\Rightarrow z=3$។" },
+        { q: "រកវ៉ិចទ័រប្រាប់ទិសនៃបន្ទាត់ដែលកាត់តាមពីរចំណុច $A(1, 1, 1)$ និង $B(2, 3, 5)$?", opt: ["$\\vec{u}=(1, 2, 4)$", "$\\vec{u}=(3, 4, 6)$", "$\\vec{u}=(-1, -2, -4)$", "$\\vec{u}=(1, 3, 5)$"], ans: "$\\vec{u}=(1, 2, 4)$", exp: "វ៉ិចទ័រប្រាប់ទិសអាចយកជាវ៉ិចទ័រ $\\vec{AB} = (2-1, 3-1, 5-1) = (1, 2, 4)$។" },
+        { q: "គណនាចម្ងាយពីចំណុច $P(1, 2, 3)$ ទៅគល់កូអរដោនេ $O(0,0,0)$?", opt: ["$\\sqrt{14}$", "$6$", "$\\sqrt{6}$", "$14$"], ans: "$\\sqrt{14}$", exp: "$OP = \\sqrt{1^2 + 2^2 + 3^2} = \\sqrt{1 + 4 + 9} = \\sqrt{14}$" },
+        { q: "រកតម្លៃ $m$ ដើម្បីឱ្យវ៉ិចទ័រ $\\vec{u}=(2, m, 1)$ និង $\\vec{v}=(m, -3, 2)$ កែងគ្នា?", opt: ["$2$", "$-2$", "$1$", "$0$"], ans: "$2$", exp: "$\\vec{u} \\perp \\vec{v} \\Rightarrow \\vec{u} \\cdot \\vec{v} = 0 \\Rightarrow 2(m) + m(-3) + 1(2) = 0 \\Rightarrow -m + 2 = 0 \\Rightarrow m = 2$។" },
+        { q: "តើបន្ទាត់ពីរដែលមានវ៉ិចទ័រប្រាប់ទិស $\\vec{u}_1=(1, 2, -1)$ និង $\\vec{u}_2=(-2, -4, 2)$ មានទំនាក់ទំនងគ្នាយ៉ាងណា?", opt: ["ស្របគ្នា ឬជាន់គ្នា", "កែងគ្នា", "កាត់គ្នាបង្កើតមុំ $90^\\circ$", "ខ្វែងគ្នា"], ans: "ស្របគ្នា ឬជាន់គ្នា", exp: "ដោយសារ $\\vec{u}_2 = -2\\vec{u}_1$ នាំឱ្យវ៉ិចទ័រប្រាប់ទិសទាំងពីរស្របគ្នា ដូចនេះបន្ទាត់ទាំងពីរស្របគ្នា ឬជាន់គ្នា។" },
+        { q: "រកកូអរដោនេផ្ចិត $I$ នៃដែនស៊្វែរ $(S): x^2 + y^2 + z^2 - 2x + 4y - 6z = 0$?", opt: ["$I(1, -2, 3)$", "$I(-1, 2, -3)$", "$I(2, -4, 6)$", "$I(1, 2, 3)$"], ans: "$I(1, -2, 3)$", exp: "ផ្ចិត $I\\left(-\\frac{a}{2}, -\\frac{b}{2}, -\\frac{c}{2}\\right) = I\\left(-\\frac{-2}{2}, -\\frac{4}{2}, -\\frac{-6}{2}\\right) = I(1, -2, 3)$។" },
+        { q: "គណនាកាំ $R$ នៃដែនស៊្វែរ $(S): x^2 + y^2 + z^2 - 4z - 5 = 0$?", opt: ["$3$", "$9$", "$5$", "$\\sqrt{5}$"], ans: "$3$", exp: "សមីការសរសេរឡើងវិញ៖ $x^2 + y^2 + (z-2)^2 - 4 - 5 = 0 \\Rightarrow x^2 + y^2 + (z-2)^2 = 9 \\Rightarrow R = \\sqrt{9} = 3$។" },
+        { q: "បើដឹងថា $\\vec{u} \\times \\vec{v} = \\vec{0}$ តើគេអាចសន្និដ្ឋានបានដូចម្តេចចំពោះវ៉ិចទ័រទាំងពីរ (មិនសូន្យ)?", opt: ["$\\vec{u}$ ស្របនឹង $\\vec{v}$", "$\\vec{u}$ កែងនឹង $\\vec{v}$", "$\\vec{u}$ ស្មើនឹង $\\vec{v}$", "គ្មានទំនាក់ទំនងទេ"], ans: "$\\vec{u}$ ស្របនឹង $\\vec{v}$", exp: "ផលគុណខ្វែងស្មើវ៉ិចទ័រសូន្យ លុះត្រាតែមុំរវាងវ៉ិចទ័រទាំងពីរស្មើ $0^\\circ$ ឬ $180^\\circ$ (ស្របគ្នា)។" },
+        { q: "គណនាផលគុណខ្វែង $\\vec{j} \\times \\vec{i}$ នៃវ៉ិចទ័រឯកតាគោល?", opt: ["$-\\vec{k}$", "$\\vec{k}$", "$\\vec{0}$", "$1$"], ans: "$-\\vec{k}$", exp: "តាមលក្ខណៈប្រឆាំងត្រឡប់នៃផលគុណខ្វែង គេបាន $\\vec{j} \\times \\vec{i} = -(\\vec{i} \\times \\vec{j}) = -\\vec{k}$។" },
+        { q: "រកសមីការប្លង់កាត់តាម $A(1, 0, 0)$ និងមានវ៉ិចទ័រណរម៉ាល់ $\\vec{n}=(1, -1, 2)$?", opt: ["$x - y + 2z - 1 = 0$", "$x - y + 2z + 1 = 0$", "$x + y + 2z - 1 = 0$", "$x - y + 2z = 0$"], ans: "$x - y + 2z - 1 = 0$", exp: "សមីការប្លង់៖ $1(x-1) - 1(y-0) + 2(z-0) = 0 \\Rightarrow x - y + 2z - 1 = 0$។" },
+        { q: "រកកូអរដោនេចំណុចប្រសព្វរវាងបន្ទាត់ $(L): \\begin{cases} x = t \\\\ y = t \\\\ z = t \\end{cases}$ ជាមួយប្លង់ $(P): x + y + z - 3 = 0$?", opt: ["$(1, 1, 1)$", "$(0, 0, 0)$", "$(2, 2, 2)$", "$(3, 0, 0)$"], ans: "$(1, 1, 1)$", exp: "ជំនួស $x,y,z$ ចូលប្លង់៖ $t + t + t - 3 = 0 \\Rightarrow 3t = 3 \\Rightarrow t = 1$។ នាំឱ្យចំណុចនោះគឺ $(1, 1, 1)$។" },
+        { q: "គណនាផ្ទៃក្រឡាប្រឡេឡូក្រាមដែលសង់លើវ៉ិចទ័រ $\\vec{u}$ និង $\\vec{v}$ បើដឹងថា $||\\vec{u} \\times \\vec{v}|| = 12$?", opt: ["$12$", "$6$", "$24$", "$4$"], ans: "$12$", exp: "ផ្ទៃក្រឡាប្រឡេឡូក្រាមគឺស្មើនឹងម៉ូឌុលនៃផលគុណខ្វែងដោយផ្ទាល់ $S = ||\\vec{u} \\times \\vec{v}|| = 12$។" },
+        { q: "តើចំណុច $A(1, 2, 3)$ ស្ថិតនៅចម្ងាយប៉ុន្មានពីប្លង់កូអរដោនេ $(Oxy)$?", opt: ["$3$", "$1$", "$2$", "$\\sqrt{14}$"], ans: "$3$", exp: "ចម្ងាយពីចំណុច $(x,y,z)$ ទៅប្លង់ $(Oxy)$ គឺស្មើនឹងតម្លៃដាច់ខាតនៃកូអរដោនេ $z$ ពោលគឺ $|3| = 3$។" },
+        { q: "រកសមីការប៉ារ៉ាម៉ែត្រនៃបន្ទាត់កាត់តាម $A(1, -1, 0)$ និងមានវ៉ិចទ័រប្រាប់ទិស $\\vec{u}=(2, 3, -1)$?", opt: ["$\\begin{cases} x = 1 + 2t \\\\ y = -1 + 3t \\\\ z = -t \\end{cases}$", "$\\begin{cases} x = 2 + t \\\\ y = 3 - t \\\\ z = -t \\end{cases}$", "$\\begin{cases} x = 1 - 2t \\\\ y = -1 - 3t \\\\ z = t \\end{cases}$", "$\\begin{cases} x = 2t \\\\ y = 3t \\\\ z = -t \\end{cases}$"], ans: "$\\begin{cases} x = 1 + 2t \\\\ y = -1 + 3t \\\\ z = -t \\end{cases}$", exp: "តាមរូបមន្តសមីការប៉ារ៉ាម៉ែត្រ៖ $x = x_0 + at, y = y_0 + bt, z = z_0 + ct$។" },
+        { q: "បើប្លង់ពីរមានវ៉ិចទ័រណរម៉ាល់ $\\vec{n}_1=(1, 1, 0)$ និង $\\vec{n}_2=(1, -1, 5)$ តើប្លង់ទាំងពីរមានទំនាក់ទំនងគ្នាបែបណា?", opt: ["កែងគ្នា", "ស្របគ្នា", "ជាន់គ្នា", "កាត់គ្នាបង្កើតមុំ $45^\\circ$"], ans: "កែងគ្នា", exp: "គណនាផលគុណស្កាលែ៖ $\\vec{n}_1 \\cdot \\vec{n}_2 = (1)(1) + (1)(-1) + (0)(5) = 1 - 1 + 0 = 0$ នាំឱ្យប្លង់ទាំងពីរកែងគ្នា។" },
+        { q: "គណនាផលគុណចម្រុះ $(\\vec{u} \\times \\vec{v}) \\cdot \\vec{w}$ បើវ៉ិចទ័រទាំងបីស្ថិតនៅលើប្លង់តែមួយ?", opt: ["$0$", "$1$", "$-1$", "មិនអាចកំណត់បាន"], ans: "$0$", exp: "កាលណាមានលក្ខណៈរួមប្លង់ (Coplanar) វ៉ិចទ័រ $\\vec{u} \\times \\vec{v}$ នឹងកែងទៅនឹងវ៉ិចទ័រ $\\vec{w}$ ធ្វើឱ្យផលគុណស្កាលែចុងក្រោយស្មើ $0$ (មាឌស្មើ 0)។" },
+        { q: "រកកូអរដោនេនៃវ៉ិចទ័រឯកតាដែលមានទិសដៅដូចវ៉ិចទ័រ $\\vec{u}=(0, 3, 4)$?", opt: ["$\\left(0, \\frac{3}{5}, \\frac{4}{5}\\right)$", "$(0, 1, 1)$", "$\\left(0, \\frac{3}{25}, \\frac{4}{25}\\right)$", "$(0, 3, 4)$"], ans: "$\\left(0, \\frac{3}{5}, \\frac{4}{5}\\right)$", exp: "ម៉ូឌុល $||\\vec{u}||=\\sqrt{0^2+3^2+4^2}=5$។ វ៉ិចទ័រឯកតាគឺ $\\frac{\\vec{u}}{||\\vec{u}||} = \\left(0, \\frac{3}{5}, \\frac{4}{5}\\right)$។" },
+        { q: "តើកន្សោម ||$\\vec{u} \\times \\vec{v}$|| ស្មើនឹងអ្វីតាមនិយមន័យមុំ $\\theta$?", opt: ["$||\\vec{u}|| \\cdot ||\\vec{v}|| \\sin\\theta$", "$||\\vec{u}|| \\cdot ||\\vec{v}|| \\cos\\theta$", "$||\\vec{u}|| \\cdot ||\\vec{v}||$", "$0$"], ans: "$||\\vec{u}|| \\cdot ||\\vec{v}|| \\sin\\theta$", exp: "នេះជានិយមន័យប្រវែង ឬម៉ូឌុលនៃផលគុណខ្វែងរវាងពីរវ៉ិចទ័រ។" },
+        { q: "រកចម្ងាយពីចំណុច $A(1, 1, 1)$ ទៅប្លង់ $(P): x + 2y + 2z + 4 = 0$?", opt: ["$3$", "$9$", "$1$", "$2$"], ans: "$3$", exp: "$d = \\frac{|1(1) + 2(1) + 2(1) + 4|}{\\sqrt{1^2 + 2^2 + 2^2}} = \\frac{|1+2+2+4|}{\\sqrt{9}} = \\frac{9}{3} = 3$។" },
+        { q: "រកសមីការដែនស៊្វែរដែលមានអង្កត់ផ្ចិត $AB$ បើ $A(0,0,0)$ និង $B(0,0,4)$?", opt: ["$x^2 + y^2 + (z-2)^2 = 4$", "$x^2 + y^2 + z^2 = 16$", "$x^2 + y^2 + (z-2)^2 = 16$", "$x^2 + y^2 + z^2 = 4$"], ans: "$x^2 + y^2 + (z-2)^2 = 4$", exp: "ផ្ចិតជាចំណុចកណ្តាល $I(0,0,2)$ ហើយកាំជាពាក់កណ្តាលអង្កត់ផ្ចិត $R = 2$ នាំឱ្យបាន $x^2 + y^2 + (z-2)^2 = 2^2 = 4$។" },
+        { q: "បើបន្ទាត់មួយមានវ៉ិចទ័រប្រាប់ទិស $\\vec{u}=(1, 0, 0)$ តើបន្ទាត់នោះស្របនឹងអ័ក្សណា?", opt: ["អ័ក្ស $Ox$", "អ័ក្ស $Oy$", "អ័ក្ស $Oz$", "មិនស្របនឹងអ័ក្សណាទាំងអស់"], ans: "អ័ក្ស $Ox$", exp: "$\\vec{u}=(1,0,0) = \\vec{i}$ ដែលជាវ៉ិចទ័រឯកតាគោលនៃអ័ក្សអាប់ស៊ីស $Ox$។" },
+        { q: "គណនាមុំរវាងប្លង់ $(P): x + y + 5 = 0$ និងប្លង់ $(Q): x - y - 2 = 0$?", opt: ["$90^\\circ$", "$0^\\circ$", "$45^\\circ$", "$60^\\circ$"], ans: "$90^\\circ$", exp: "វ៉ិចទ័រណរម៉ាល់ $\\vec{n}_1=(1,1,0)$ និង $\\vec{n}_2=(1,-1,0)$ មានផលគុណស្កាលែស្មើ $1-1+0=0$ ដូចនេះមុំរវាងប្លង់ទាំងពីរគឺ $90^\\circ$។" },
+        { q: "រកមាឌប្រលេពីប៉ែតដែលសង់លើវ៉ិចទ័រទាំងបី $\\vec{u}=(1,0,0), \\vec{v}=(0,2,0), \\vec{w}=(0,0,3)$?", opt: ["$6$", "$1$", "$5$", "$0$"], ans: "$6$", exp: "មាឌ $V = |(\\vec{u} \\times \\vec{v}) \\cdot \\vec{w}| = |(0,0,2) \\cdot (0,0,3)| = |6| = 6$ (ឬគណនាតាមដេទែមីណង់)" }
+    ];
+
+    // មុខងារសម្រាប់ Shuffle Array (Algorithm: Fisher-Yates)
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // ១. ធ្វើការ Shuffle លំដាប់លំហាត់
+    const shuffledQuestions = shuffle([...questions]);
+
+    const form = document.getElementById('quizForm');
+    shuffledQuestions.forEach((item, i) => {
+        // ២. ធ្វើការ Shuffle លំដាប់ជម្រើសចម្លើយនៅក្នុងសំណួរនីមួយៗ
+        let shuffledOptions = shuffle([...item.opt]);
+
+        let optHtml = shuffledOptions.map(o => `
+            <label>
+                <input type="radio" name="q${i}" value="${o}"> ${o}
+            </label>
+        `).join('');
+        
+        form.innerHTML += `
+            <div class="question-box">
+                <div class="question-title">សំណួរទី ${i+1}: ${item.q}</div>
+                <div class="options">${optHtml}</div>
+                <div id="r${i}" class="feedback"></div>
+            </div>
+        `;
+    });
+
+    // មុខងារកែពិន្ទុ និងបង្ហាញដំណោះស្រាយ
+    function evaluateQuiz() {
+        const name = document.getElementById('sName').value.trim();
+        const sClass = document.getElementById('sClass').value.trim();
+
+        if (!name || !sClass) {
+            alert("សូមបំពេញឈ្មោះ និងថ្នាក់រៀនរបស់សិស្សជាមុនសិន!");
+            return;
+        }
+
+        let score = 0;
+        shuffledQuestions.forEach((item, i) => {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            const resBox = document.getElementById(`r${i}`);
+            resBox.style.display = "block";
+
+            if (selected && selected.value === item.ans) {
+                score++;
+                resBox.className = "feedback correct";
+                resBox.innerHTML = "✅ <b>ត្រឹមត្រូវ!</b> ដំណោះស្រាយ៖ " + item.exp;
+            } else {
+                resBox.className = "feedback incorrect";
+                resBox.innerHTML = "❌ <b>មិនត្រឹមត្រូវទេ!</b> ចម្លើយដែលត្រូវគឺ៖ " + item.ans + "<br>💡 <b>ការពន្យល់៖</b> " + item.exp;
+            }
+        });
+
+        const summaryBox = document.getElementById('summary');
+        summaryBox.style.display = "block";
+        summaryBox.innerHTML = `🎓 បេក្ខជន៖ ${name} | ថ្នាក់៖ ${sClass} <br> 📊 លទ្ធផលទទួលបាន៖ ${score} / ${shuffledQuestions.length} សំណួរ (ចំណាត់ថ្នាក់៖ ${Math.round((score/25)*100)}%)`;
+        
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+        
+        summaryBox.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
